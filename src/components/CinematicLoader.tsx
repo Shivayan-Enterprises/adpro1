@@ -6,140 +6,137 @@ interface CinematicLoaderProps {
 }
 
 export const CinematicLoader = ({ onComplete }: CinematicLoaderProps) => {
-  const [phase, setPhase] = useState<'logo' | 'reveal' | 'exit'>('logo');
-  const [progress, setProgress] = useState(0);
+  const [phase, setPhase] = useState<'closed' | 'opening' | 'logo' | 'open'>('closed');
 
   useEffect(() => {
-    // Progress animation
-    const progressInterval = setInterval(() => {
-      setProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(progressInterval);
-          return 100;
-        }
-        return prev + 2;
-      });
-    }, 40);
-
-    // Phase transitions
-    const revealTimer = setTimeout(() => setPhase('reveal'), 2000);
-    const exitTimer = setTimeout(() => setPhase('exit'), 2800);
-    const completeTimer = setTimeout(onComplete, 3500);
+    // Start with doors closed, then open them
+    const startTimer = setTimeout(() => setPhase('opening'), 300);
+    const logoTimer = setTimeout(() => setPhase('logo'), 800);
+    const openTimer = setTimeout(() => setPhase('open'), 2000);
+    const completeTimer = setTimeout(onComplete, 2500);
 
     return () => {
-      clearInterval(progressInterval);
-      clearTimeout(revealTimer);
-      clearTimeout(exitTimer);
+      clearTimeout(startTimer);
+      clearTimeout(logoTimer);
+      clearTimeout(openTimer);
       clearTimeout(completeTimer);
     };
   }, [onComplete]);
 
   return (
-    <div
-      className={cn(
-        "fixed inset-0 z-[100] flex items-center justify-center bg-background",
-        phase === 'exit' && "pointer-events-none"
-      )}
-    >
-      {/* Animated background grid */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute inset-0 grid-pattern animate-grid-move" />
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10" />
-      </div>
+    <div className="fixed inset-0 z-[100] overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0 bg-background" />
 
-      {/* Main content */}
+      {/* Center Logo - appears during opening */}
       <div
         className={cn(
-          "relative z-10 flex flex-col items-center transition-transform duration-700",
-          phase === 'exit' && "scale-150"
+          "absolute inset-0 flex items-center justify-center z-10 transition-all duration-700",
+          phase === 'closed' && "scale-50",
+          phase === 'opening' && "scale-75",
+          phase === 'logo' && "scale-100",
+          phase === 'open' && "scale-150"
         )}
       >
-        {/* Logo */}
-        <div
-          className={cn(
-            "relative transition-transform duration-700",
-            phase === 'logo' && "scale-100",
-            phase === 'reveal' && "scale-110",
-            phase === 'exit' && "scale-0"
-          )}
-        >
-          <h1 className="text-6xl md:text-8xl font-poppins font-bold text-gradient">
+        <div className="text-center">
+          <h1
+            className={cn(
+              "text-6xl md:text-8xl font-poppins font-bold text-gradient transition-all duration-500",
+              phase === 'closed' && "scale-0",
+              phase === 'opening' && "scale-90",
+              (phase === 'logo' || phase === 'open') && "scale-100"
+            )}
+          >
             ADPRO
           </h1>
-          
-          {/* Glowing underline */}
-          <div
-            className="absolute -bottom-4 left-0 h-1 bg-gradient-to-r from-primary to-accent rounded-full glow-strong transition-all duration-1000"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-
-        {/* Tagline */}
-        <p
-          className={cn(
-            "mt-12 text-lg text-muted-foreground transition-all duration-500",
-            phase === 'logo' && "translate-y-10 scale-90",
-            phase === 'reveal' && "translate-y-0 scale-100",
-            phase === 'exit' && "-translate-y-10 scale-90"
-          )}
-        >
-          Engineering Excellence
-        </p>
-
-        {/* Loading indicator */}
-        <div
-          className={cn(
-            "mt-8 flex items-center gap-2 transition-all duration-500",
-            phase === 'exit' && "scale-0"
-          )}
-        >
-          <div className="w-2 h-2 rounded-full bg-primary animate-bounce-gentle" style={{ animationDelay: '0ms' }} />
-          <div className="w-2 h-2 rounded-full bg-primary animate-bounce-gentle" style={{ animationDelay: '150ms' }} />
-          <div className="w-2 h-2 rounded-full bg-primary animate-bounce-gentle" style={{ animationDelay: '300ms' }} />
+          <p
+            className={cn(
+              "mt-4 text-lg text-muted-foreground transition-all duration-500 delay-200",
+              (phase === 'closed' || phase === 'opening') && "translate-y-4 scale-90",
+              phase === 'logo' && "translate-y-0 scale-100",
+              phase === 'open' && "-translate-y-4 scale-90"
+            )}
+          >
+            Marketing & Technology
+          </p>
         </div>
       </div>
 
-      {/* Corner decorations */}
+      {/* Left Door */}
       <div
         className={cn(
-          "absolute top-0 left-0 w-32 h-32 border-l-2 border-t-2 border-primary/30 transition-all duration-700",
-          phase === 'exit' && "-translate-x-full -translate-y-full"
+          "absolute top-0 left-0 w-1/2 h-full bg-card border-r border-border transition-transform duration-1000 ease-[cubic-bezier(0.65,0,0.35,1)] z-20",
+          "flex items-center justify-end pr-4",
+          phase === 'closed' && "translate-x-0",
+          phase === 'opening' && "translate-x-0",
+          phase === 'logo' && "translate-x-0",
+          phase === 'open' && "-translate-x-full"
         )}
-      />
+      >
+        {/* Door handle */}
+        <div className="relative">
+          <div className="w-1 h-24 bg-gradient-to-b from-primary/50 to-primary rounded-full" />
+          <div className="absolute top-1/2 -translate-y-1/2 right-2 w-3 h-8 bg-primary/30 rounded-full" />
+        </div>
+        
+        {/* Door pattern */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute inset-0 grid-pattern opacity-10" />
+          {/* Vertical lines */}
+          <div className="absolute top-0 right-8 w-px h-full bg-gradient-to-b from-transparent via-border to-transparent" />
+          <div className="absolute top-0 right-16 w-px h-full bg-gradient-to-b from-transparent via-border/50 to-transparent" />
+        </div>
+      </div>
+
+      {/* Right Door */}
       <div
         className={cn(
-          "absolute top-0 right-0 w-32 h-32 border-r-2 border-t-2 border-accent/30 transition-all duration-700",
-          phase === 'exit' && "translate-x-full -translate-y-full"
+          "absolute top-0 right-0 w-1/2 h-full bg-card border-l border-border transition-transform duration-1000 ease-[cubic-bezier(0.65,0,0.35,1)] z-20",
+          "flex items-center justify-start pl-4",
+          phase === 'closed' && "translate-x-0",
+          phase === 'opening' && "translate-x-0",
+          phase === 'logo' && "translate-x-0",
+          phase === 'open' && "translate-x-full"
         )}
-      />
+      >
+        {/* Door handle */}
+        <div className="relative">
+          <div className="w-1 h-24 bg-gradient-to-b from-primary/50 to-primary rounded-full" />
+          <div className="absolute top-1/2 -translate-y-1/2 left-2 w-3 h-8 bg-primary/30 rounded-full" />
+        </div>
+        
+        {/* Door pattern */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute inset-0 grid-pattern opacity-10" />
+          {/* Vertical lines */}
+          <div className="absolute top-0 left-8 w-px h-full bg-gradient-to-b from-transparent via-border to-transparent" />
+          <div className="absolute top-0 left-16 w-px h-full bg-gradient-to-b from-transparent via-border/50 to-transparent" />
+        </div>
+      </div>
+
+      {/* Door frame edges */}
       <div
         className={cn(
-          "absolute bottom-0 left-0 w-32 h-32 border-l-2 border-b-2 border-accent/30 transition-all duration-700",
-          phase === 'exit' && "-translate-x-full translate-y-full"
-        )}
-      />
-      <div
-        className={cn(
-          "absolute bottom-0 right-0 w-32 h-32 border-r-2 border-b-2 border-primary/30 transition-all duration-700",
-          phase === 'exit' && "translate-x-full translate-y-full"
+          "absolute top-0 left-1/2 -translate-x-1/2 w-1 h-full bg-gradient-to-b from-primary/30 via-primary to-primary/30 z-30 transition-all duration-1000",
+          phase === 'open' && "opacity-0 scale-x-0"
         )}
       />
 
-      {/* Exit curtains */}
+      {/* Top and bottom frame accents */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent z-30" />
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent z-30" />
+
+      {/* Light glow behind doors */}
       <div
         className={cn(
-          "absolute inset-y-0 left-0 w-1/2 bg-background transition-transform duration-700 ease-in-out",
-          phase === 'exit' ? "-translate-x-full" : "translate-x-[-100%]"
+          "absolute inset-0 flex items-center justify-center transition-all duration-1000",
+          phase === 'opening' && "opacity-30",
+          phase === 'logo' && "opacity-50",
+          phase === 'open' && "opacity-0"
         )}
-        style={{ transitionDelay: phase === 'exit' ? '0ms' : '0ms' }}
-      />
-      <div
-        className={cn(
-          "absolute inset-y-0 right-0 w-1/2 bg-background transition-transform duration-700 ease-in-out",
-          phase === 'exit' ? "translate-x-full" : "translate-x-[100%]"
-        )}
-        style={{ transitionDelay: phase === 'exit' ? '0ms' : '0ms' }}
-      />
+      >
+        <div className="w-96 h-96 rounded-full bg-primary/20 blur-3xl" />
+      </div>
     </div>
   );
 };
