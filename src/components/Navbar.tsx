@@ -1,20 +1,21 @@
 import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { ThemeToggle } from './ThemeToggle';
 import { MagneticButton } from './MagneticButton';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navLinks = [
-  { label: 'About', href: '#about' },
-  { label: 'Services', href: '#services' },
-  { label: 'Tech Stack', href: '#tech-stack' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'About', href: '/about' },
+  { label: 'Services', href: '/services' },
+  { label: 'Projects', href: '/projects' },
+  { label: 'Contact', href: '/contact' },
 ];
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,13 +25,9 @@ export const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+  useEffect(() => {
     setIsMobileMenuOpen(false);
-  };
+  }, [location]);
 
   return (
     <nav
@@ -44,32 +41,34 @@ export const Navbar = () => {
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <a 
-            href="#" 
+          <Link 
+            to="/" 
             className="text-2xl font-poppins font-bold text-gradient"
-            onClick={(e) => {
-              e.preventDefault();
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
           >
             ADPRO
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.label}
-                href={link.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection(link.href);
-                }}
-                className="relative text-foreground/80 hover:text-foreground font-medium transition-colors group"
+                to={link.href}
+                className={cn(
+                  "relative font-medium transition-colors group",
+                  location.pathname === link.href
+                    ? "text-foreground"
+                    : "text-foreground/80 hover:text-foreground"
+                )}
               >
                 {link.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
-              </a>
+                <span 
+                  className={cn(
+                    "absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-300",
+                    location.pathname === link.href ? "w-full" : "w-0 group-hover:w-full"
+                  )} 
+                />
+              </Link>
             ))}
           </div>
 
@@ -78,13 +77,14 @@ export const Navbar = () => {
             <ThemeToggle />
             
             <div className="hidden md:block">
-              <MagneticButton 
-                variant="primary" 
-                className="px-6 py-2 text-sm"
-                onClick={() => scrollToSection('#contact')}
-              >
-                Get Started
-              </MagneticButton>
+              <Link to="/contact">
+                <MagneticButton 
+                  variant="primary" 
+                  className="px-6 py-2 text-sm"
+                >
+                  Get Started
+                </MagneticButton>
+              </Link>
             </div>
 
             {/* Mobile menu button */}
@@ -110,25 +110,27 @@ export const Navbar = () => {
         >
           <div className="flex flex-col gap-4 py-4">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.label}
-                href={link.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection(link.href);
-                }}
-                className="text-foreground/80 hover:text-foreground font-medium transition-colors py-2"
+                to={link.href}
+                className={cn(
+                  "font-medium transition-colors py-2",
+                  location.pathname === link.href
+                    ? "text-foreground"
+                    : "text-foreground/80 hover:text-foreground"
+                )}
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
-            <MagneticButton 
-              variant="primary" 
-              className="w-full py-3 text-sm mt-2"
-              onClick={() => scrollToSection('#contact')}
-            >
-              Get Started
-            </MagneticButton>
+            <Link to="/contact">
+              <MagneticButton 
+                variant="primary" 
+                className="w-full py-3 text-sm mt-2"
+              >
+                Get Started
+              </MagneticButton>
+            </Link>
           </div>
         </div>
       </div>

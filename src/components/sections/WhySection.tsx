@@ -45,8 +45,8 @@ export const WhySection = () => {
           <div
             className={`text-center mb-16 transition-all duration-700 ${
               isVisible 
-                ? 'translate-x-0 opacity-100' 
-                : '-translate-x-20 opacity-0'
+                ? 'translate-x-0 scale-100' 
+                : '-translate-x-20 scale-95'
             }`}
           >
             <h2 className="text-3xl md:text-5xl font-bold mb-6">
@@ -65,8 +65,8 @@ export const WhySection = () => {
                 key={reason.title}
                 className={`group p-6 rounded-2xl bg-card border border-border transition-all duration-500 hover:card-glow-hover hover:scale-105 ${
                   isVisible 
-                    ? 'translate-y-0 opacity-100' 
-                    : 'translate-y-20 opacity-0'
+                    ? 'translate-y-0 scale-100' 
+                    : 'translate-y-20 scale-90'
                 }`}
                 style={{ transitionDelay: `${200 + index * 100}ms` }}
                 data-hover
@@ -84,8 +84,8 @@ export const WhySection = () => {
           <div
             className={`mt-16 text-center transition-all duration-700 delay-700 ${
               isVisible 
-                ? 'scale-100 opacity-100' 
-                : 'scale-90 opacity-0'
+                ? 'scale-100 translate-y-0' 
+                : 'scale-90 translate-y-10'
             }`}
           >
             <blockquote className="text-2xl md:text-3xl font-bold text-gradient max-w-3xl mx-auto">
