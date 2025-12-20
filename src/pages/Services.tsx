@@ -10,10 +10,10 @@ const Services = () => {
   return (
     <>
       <Helmet>
-        <title>Services | ADPRO - Web & Mobile Development</title>
+        <title>Services | ADPRO - Digital Marketing & Software Development</title>
         <meta 
           name="description" 
-          content="Comprehensive digital solutions: Web Development, Mobile Apps, UI/UX Design, Backend & APIs, and Cloud Solutions tailored to your business needs." 
+          content="Full-service digital marketing, advertising, and software development. SEO, paid ads, web development, and custom software solutions." 
         />
       </Helmet>
 
