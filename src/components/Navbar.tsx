@@ -43,7 +43,7 @@ export const Navbar = () => {
           {/* Logo */}
           <Link 
             to="/" 
-            className="text-2xl font-poppins font-bold text-gradient"
+            className="text-2xl font-playfair font-bold text-gradient"
           >
             ADPRO
           </Link>
