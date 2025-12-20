@@ -27,8 +27,8 @@ export const TechStackSection = () => {
           <div
             className={`text-center mb-16 transition-all duration-700 ${
               isVisible 
-                ? 'translate-y-0 opacity-100' 
-                : 'translate-y-20 opacity-0'
+                ? 'translate-y-0 scale-100' 
+                : 'translate-y-20 scale-95'
             }`}
           >
             <h2 className="text-3xl md:text-5xl font-bold mb-6">
@@ -44,8 +44,8 @@ export const TechStackSection = () => {
           <div
             className={`flex flex-wrap justify-center gap-8 md:gap-16 mb-16 transition-all duration-700 delay-200 ${
               isVisible 
-                ? 'scale-100 opacity-100' 
-                : 'scale-90 opacity-0'
+                ? 'scale-100 translate-y-0' 
+                : 'scale-90 translate-y-10'
             }`}
           >
             {technologies.map((tech, index) => (
@@ -63,8 +63,8 @@ export const TechStackSection = () => {
           <div
             className={`flex flex-wrap justify-center gap-3 max-w-3xl mx-auto transition-all duration-700 delay-400 ${
               isVisible 
-                ? 'translate-y-0 opacity-100' 
-                : 'translate-y-20 opacity-0'
+                ? 'translate-y-0 scale-100' 
+                : 'translate-y-20 scale-95'
             }`}
           >
             {additionalTech.map((tech, index) => (
@@ -83,8 +83,8 @@ export const TechStackSection = () => {
           <div
             className={`mt-16 max-w-2xl mx-auto transition-all duration-700 delay-600 ${
               isVisible 
-                ? 'translate-x-0 opacity-100' 
-                : 'translate-x-20 opacity-0'
+                ? 'translate-x-0 scale-100' 
+                : 'translate-x-20 scale-95'
             }`}
           >
             <div className="rounded-2xl bg-card border border-border overflow-hidden">

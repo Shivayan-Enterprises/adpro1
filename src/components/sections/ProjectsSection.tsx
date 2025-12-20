@@ -68,7 +68,7 @@ const ProjectCard = ({ project, index }: { project: typeof projects[0]; index: n
           alt={project.title}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
       </div>
 
       {/* Content */}
@@ -76,16 +76,16 @@ const ProjectCard = ({ project, index }: { project: typeof projects[0]; index: n
         <span className="text-xs font-medium text-primary uppercase tracking-wider">
           {project.category}
         </span>
-        <h3 className="text-xl font-bold mt-2 mb-3 flex items-center gap-2">
+        <h3 className="text-xl font-bold mt-2 mb-3 flex items-center gap-2 text-card-foreground">
           {project.title}
-          <ExternalLink className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+          <ExternalLink className="w-4 h-4 scale-0 group-hover:scale-100 transition-transform duration-300" />
         </h3>
         
         {/* Description - slides in on hover */}
         <div
           className={cn(
             "transition-all duration-300 overflow-hidden",
-            isHovered ? "max-h-20 opacity-100" : "max-h-0 opacity-0"
+            isHovered ? "max-h-20 translate-y-0" : "max-h-0 -translate-y-4"
           )}
         >
           <p className="text-muted-foreground text-sm mb-4">
@@ -99,7 +99,7 @@ const ProjectCard = ({ project, index }: { project: typeof projects[0]; index: n
             <span
               key={tag}
               className={cn(
-                "px-2 py-1 rounded-md bg-secondary text-xs font-medium transition-all duration-300",
+                "px-2 py-1 rounded-md bg-secondary text-secondary-foreground text-xs font-medium transition-all duration-300",
                 isHovered && "scale-105"
               )}
               style={{ transitionDelay: `${tagIndex * 50}ms` }}
@@ -124,8 +124,8 @@ export const ProjectsSection = () => {
           <div
             className={`text-center mb-16 transition-all duration-700 ${
               isVisible 
-                ? 'translate-y-0 opacity-100' 
-                : 'translate-y-20 opacity-0'
+                ? 'translate-y-0 scale-100' 
+                : 'translate-y-20 scale-95'
             }`}
           >
             <h2 className="text-3xl md:text-5xl font-bold mb-6">
@@ -141,13 +141,14 @@ export const ProjectsSection = () => {
           <div
             className={`grid md:grid-cols-2 lg:grid-cols-3 gap-8 transition-all duration-700 delay-200 ${
               isVisible 
-                ? 'translate-y-0 opacity-100' 
-                : 'translate-y-20 opacity-0'
+                ? 'translate-y-0 scale-100' 
+                : 'translate-y-20 scale-95'
             }`}
           >
             {projects.map((project, index) => (
               <div
                 key={project.title}
+                className="transition-all duration-500"
                 style={{ transitionDelay: `${200 + index * 100}ms` }}
               >
                 <ProjectCard project={project} index={index} />

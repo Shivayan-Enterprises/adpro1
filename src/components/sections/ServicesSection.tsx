@@ -79,7 +79,7 @@ const ServiceCard = ({ service, index }: { service: typeof services[0]; index: n
       <div
         className={cn(
           "overflow-hidden transition-all duration-500",
-          isExpanded ? "max-h-40 opacity-100 mt-4" : "max-h-0 opacity-0"
+          isExpanded ? "max-h-40 mt-4 translate-y-0" : "max-h-0 -translate-y-4"
         )}
       >
         <div className="pt-4 border-t border-border">
@@ -112,8 +112,8 @@ export const ServicesSection = () => {
           <div
             className={`text-center mb-16 transition-all duration-700 ${
               isVisible 
-                ? 'translate-y-0 opacity-100' 
-                : 'translate-y-20 opacity-0'
+                ? 'translate-y-0 scale-100' 
+                : 'translate-y-20 scale-95'
             }`}
           >
             <h2 className="text-3xl md:text-5xl font-bold mb-6">
@@ -129,8 +129,8 @@ export const ServicesSection = () => {
           <div
             className={`grid md:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-700 delay-200 ${
               isVisible 
-                ? 'translate-y-0 opacity-100' 
-                : 'translate-y-20 opacity-0'
+                ? 'translate-y-0 scale-100' 
+                : 'translate-y-20 scale-95'
             }`}
           >
             {services.map((service, index) => (
