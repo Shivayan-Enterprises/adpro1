@@ -1,13 +1,47 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { Navbar } from '@/components/Navbar';
+import { CustomCursor } from '@/components/CustomCursor';
+import { HeroSection } from '@/components/sections/HeroSection';
+import { AboutSection } from '@/components/sections/AboutSection';
+import { ServicesSection } from '@/components/sections/ServicesSection';
+import { TechStackSection } from '@/components/sections/TechStackSection';
+import { WhySection } from '@/components/sections/WhySection';
+import { ProjectsSection } from '@/components/sections/ProjectsSection';
+import { TestimonialsSection } from '@/components/sections/TestimonialsSection';
+import { CTASection } from '@/components/sections/CTASection';
+import { ContactSection } from '@/components/sections/ContactSection';
+import { Footer } from '@/components/sections/Footer';
+import { Helmet } from 'react-helmet-async';
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <>
+      <Helmet>
+        <title>ADPRO - Software Development Company | Web & Mobile Solutions</title>
+        <meta 
+          name="description" 
+          content="ADPRO builds scalable, high-performance digital products. Expert web development, mobile apps, UI/UX design, and cloud solutions for startups and enterprises." 
+        />
+        <meta name="keywords" content="software development, web development, mobile apps, React, Node.js, cloud solutions, ADPRO" />
+        <link rel="canonical" href="https://adpro.dev" />
+      </Helmet>
+
+      <CustomCursor />
+      <Navbar />
+      
+      <main>
+        <HeroSection />
+        <AboutSection />
+        <ServicesSection />
+        <TechStackSection />
+        <WhySection />
+        <ProjectsSection />
+        <TestimonialsSection />
+        <CTASection />
+        <ContactSection />
+      </main>
+
+      <Footer />
+    </>
   );
 };
 
