@@ -1,252 +1,323 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 interface CinematicLoaderProps {
   onComplete: () => void;
 }
 
-type Phase = 'doors-closed' | 'doors-opening' | 'logo-visible' | 'splitting' | 'revealing' | 'complete';
-
 export const CinematicLoader = ({ onComplete }: CinematicLoaderProps) => {
-  const [phase, setPhase] = useState<Phase>('doors-closed');
-  const [doorProgress, setDoorProgress] = useState(0); // 0 = closed, 100 = fully open
-  const [splitProgress, setSplitProgress] = useState(0); // 0 = together, 100 = fully split
-  const [revealProgress, setRevealProgress] = useState(0); // 0 = loader visible, 100 = page visible
+  const [phase, setPhase] = useState<'initial' | 'doorsOpening' | 'revealLogo' | 'splitName' | 'revealMain' | 'complete'>('initial');
+  const [doorProgress, setDoorProgress] = useState(0);
+  const [logoProgress, setLogoProgress] = useState(0);
+  const [splitProgress, setSplitProgress] = useState(0);
+  const [fadeProgress, setFadeProgress] = useState(0);
+  
+  const animationRef = useRef<number | null>(null);
+  const startTimeRef = useRef<number | null>(null);
+
+  // Smooth easing functions for cinematic feel
+  const easeOutExpo = (t: number) => t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+  const easeInOutCubic = (t: number) => 
+    t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
   useEffect(() => {
-    // Phase 1: Show closed doors for 1.2 seconds
-    const startTimer = setTimeout(() => {
-      setPhase('doors-opening');
-      
-      // Animate doors opening over 2 seconds
-      let start = Date.now();
-      const animateDoors = () => {
-        const elapsed = Date.now() - start;
-        const progress = Math.min(elapsed / 2000, 1);
-        // Ease out cubic for smooth deceleration
-        const eased = 1 - Math.pow(1 - progress, 3);
-        setDoorProgress(eased * 100);
-        
-        if (progress < 1) {
-          requestAnimationFrame(animateDoors);
-        } else {
-          // Doors fully open, show logo for 1.5s
-          setPhase('logo-visible');
-          setTimeout(() => {
-            setPhase('splitting');
-            start = Date.now();
-            animateSplit();
-          }, 1500);
+    // Start the cinematic sequence
+    setTimeout(() => {
+      startPhase('doorsOpening', 3000, (progress) => {
+        setDoorProgress(progress);
+        if (progress >= 1) {
+          // Doors fully open, reveal logo
+          setPhase('revealLogo');
+          startPhase('revealLogo', 2000, (logoProg) => {
+            setLogoProgress(logoProg);
+            if (logoProg >= 1) {
+              // Logo fully visible, start splitting
+              setPhase('splitName');
+              setTimeout(() => {
+                startPhase('splitName', 2500, (splitProg) => {
+                  setSplitProgress(splitProg);
+                  if (splitProg >= 1) {
+                    // Split complete, reveal main page
+                    setPhase('revealMain');
+                    startPhase('revealMain', 1800, (fadeProg) => {
+                      setFadeProgress(fadeProg);
+                      if (fadeProg >= 1) {
+                        // Complete
+                        setPhase('complete');
+                        setTimeout(onComplete, 500);
+                      }
+                    });
+                  }
+                });
+              }, 800);
+            }
+          });
         }
-      };
-      requestAnimationFrame(animateDoors);
+      });
     }, 1200);
 
-    const animateSplit = () => {
-      let start = Date.now();
-      const animate = () => {
-        const elapsed = Date.now() - start;
-        const progress = Math.min(elapsed / 1000, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        setSplitProgress(eased * 100);
-        
-        if (progress < 1) {
-          requestAnimationFrame(animate);
-        } else {
-          // Split complete, reveal main page
-          setPhase('revealing');
-          start = Date.now();
-          animateReveal();
-        }
-      };
-      requestAnimationFrame(animate);
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
     };
-
-    const animateReveal = () => {
-      let start = Date.now();
-      const animate = () => {
-        const elapsed = Date.now() - start;
-        const progress = Math.min(elapsed / 800, 1);
-        setRevealProgress(progress * 100);
-        
-        if (progress < 1) {
-          requestAnimationFrame(animate);
-        } else {
-          setPhase('complete');
-          setTimeout(onComplete, 200);
-        }
-      };
-      requestAnimationFrame(animate);
-    };
-
-    return () => clearTimeout(startTimer);
   }, [onComplete]);
 
-  if (phase === 'complete') return null;
+  const startPhase = (phaseName: string, duration: number, onProgress: (progress: number) => void) => {
+    const startTime = Date.now();
+    
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      let progress = Math.min(elapsed / duration, 1);
+      
+      // Apply easing based on phase
+      if (phaseName === 'doorsOpening') {
+        progress = easeOutExpo(progress);
+      } else if (phaseName === 'splitName') {
+        progress = easeInOutCubic(progress);
+      } else {
+        progress = easeOutExpo(progress);
+      }
+      
+      onProgress(progress);
+      
+      if (elapsed < duration) {
+        animationRef.current = requestAnimationFrame(animate);
+      }
+    };
+    
+    animationRef.current = requestAnimationFrame(animate);
+  };
 
-  const isDoorsClosed = phase === 'doors-closed';
-  const showContent = !isDoorsClosed;
+  // Early return if complete
+  if (phase === 'complete') {
+    return null;
+  }
+
+  // Calculate transforms with easing
+  const leftDoorTransform = `translateX(-${doorProgress * 100}%)`;
+  const rightDoorTransform = `translateX(${doorProgress * 100}%)`;
+  
+  const leftLogoTransform = `translateX(-${splitProgress * 300}px) rotateY(-${splitProgress * 45}deg)`;
+  const rightLogoTransform = `translateX(${splitProgress * 300}px) rotateY(${splitProgress * 45}deg)`;
+  
+  const mainPageOpacity = Math.min(1, splitProgress * 3); // Appears during split
+  const loaderOpacity = 1 - fadeProgress;
 
   return (
-    <div 
-      className="fixed inset-0 z-[100] overflow-hidden"
-      style={{ opacity: phase === 'revealing' ? 1 - revealProgress / 100 : 1 }}
-    >
-      {/* Background with design - visible when doors open */}
-      <div className="absolute inset-0 bg-[#080808] z-0">
-        {showContent && (
-          <>
-            {/* Ambient glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-amber-500/[0.03] blur-[120px]" />
-            
-            {/* Grid pattern */}
-            <div className="absolute inset-0 opacity-[0.03]" style={{
-              backgroundImage: `
-                linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)
-              `,
-              backgroundSize: '60px 60px'
-            }} />
+    <div className="fixed inset-0 z-[100] overflow-hidden bg-black">
+      {/* ----- MAIN CONTENT (revealed after doors open) ----- */}
+      {phase !== 'initial' && phase !== 'doorsOpening' && (
+        <div 
+          className="absolute inset-0 z-10 transition-all duration-1000"
+          style={{ opacity: loaderOpacity }}
+        >
+          {/* Designer Background */}
+          <div className="absolute inset-0">
+            {/* Gradient Mesh */}
+            <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-900">
+              {/* Animated gradient orbs */}
+              <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-purple-500/5 blur-3xl animate-pulse" />
+              <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-amber-500/5 blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+              
+              {/* Geometric grid */}
+              <div className="absolute inset-0 opacity-10" style={{
+                backgroundImage: `
+                  linear-gradient(90deg, transparent 95%, rgba(255,215,0,0.1) 100%),
+                  linear-gradient(0deg, transparent 95%, rgba(255,215,0,0.1) 100%)
+                `,
+                backgroundSize: '50px 50px'
+              }} />
+              
+              {/* Corner accents */}
+              <div className="absolute top-0 left-0 w-64 h-64 border-t border-l border-amber-500/10" />
+              <div className="absolute top-0 right-0 w-64 h-64 border-t border-r border-amber-500/10" />
+              <div className="absolute bottom-0 left-0 w-64 h-64 border-b border-l border-amber-500/10" />
+              <div className="absolute bottom-0 right-0 w-64 h-64 border-b border-r border-amber-500/10" />
+            </div>
+          </div>
 
-            {/* Horizontal accent lines */}
-            <div className="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-amber-500/30 to-transparent -translate-y-32" />
-            <div className="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-amber-500/30 to-transparent translate-y-32" />
-            
-            {/* Corner decorations */}
-            <div className="absolute top-10 left-10 w-20 h-20 border-l border-t border-amber-500/20" />
-            <div className="absolute top-10 right-10 w-20 h-20 border-r border-t border-amber-500/20" />
-            <div className="absolute bottom-10 left-10 w-20 h-20 border-l border-b border-amber-500/20" />
-            <div className="absolute bottom-10 right-10 w-20 h-20 border-r border-b border-amber-500/20" />
+          {/* Logo and Tagline Container */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="relative">
+              {/* Logo - splits into two parts */}
+              <div className="flex items-center gap-4 mb-8">
+                {/* AD - Left part */}
+                <div 
+                  className="relative"
+                  style={{
+                    transform: leftLogoTransform,
+                    opacity: 1 - (splitProgress * 0.5),
+                    transition: 'all 2s cubic-bezier(0.4, 0, 0.2, 1)'
+                  }}
+                >
+                  <h1 
+                    className="text-8xl md:text-9xl font-bold text-white tracking-tighter"
+                    style={{
+                      opacity: logoProgress,
+                      textShadow: '0 0 40px rgba(255,215,0,0.3)',
+                      filter: `blur(${(1 - logoProgress) * 5}px)`
+                    }}
+                  >
+                    AD
+                  </h1>
+                </div>
+                
+                {/* PRO - Right part */}
+                <div 
+                  className="relative"
+                  style={{
+                    transform: rightLogoTransform,
+                    opacity: 1 - (splitProgress * 0.5),
+                    transition: 'all 2s cubic-bezier(0.4, 0, 0.2, 1)'
+                  }}
+                >
+                  <h1 
+                    className="text-8xl md:text-9xl font-bold text-white tracking-tighter"
+                    style={{
+                      opacity: logoProgress,
+                      textShadow: '0 0 40px rgba(255,215,0,0.3)',
+                      filter: `blur(${(1 - logoProgress) * 5}px)`
+                    }}
+                  >
+                    PRO
+                  </h1>
+                </div>
+              </div>
 
-            {/* Floating particles */}
-            <div className="absolute top-[20%] left-[20%] w-1 h-1 bg-amber-400/50 rounded-full animate-pulse" />
-            <div className="absolute top-[25%] right-[25%] w-1.5 h-1.5 bg-amber-400/40 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }} />
-            <div className="absolute bottom-[30%] left-[30%] w-1 h-1 bg-amber-400/50 rounded-full animate-pulse" style={{ animationDelay: '1s' }} />
-            <div className="absolute bottom-[25%] right-[20%] w-1 h-1 bg-amber-400/40 rounded-full animate-pulse" style={{ animationDelay: '0.3s' }} />
-          </>
-        )}
-      </div>
-
-      {/* Logo and Tagline - Center (behind doors) */}
-      {showContent && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
-          <div className="text-center">
-            {/* Logo - splits when in splitting phase */}
-            <div className="flex items-center justify-center mb-6">
-              <span 
-                className="font-playfair text-7xl md:text-8xl lg:text-9xl font-bold text-white tracking-wider"
-                style={{ 
-                  transform: `translateX(-${splitProgress * 3}px)`,
-                  opacity: phase === 'revealing' ? 1 - revealProgress / 100 : 1
+              {/* Tagline - appears with logo */}
+              <div 
+                className="text-center space-y-2"
+                style={{
+                  opacity: logoProgress * (1 - splitProgress * 0.8),
+                  transform: `translateY(${(1 - logoProgress) * 50}px)`,
+                  transition: 'all 2s ease-out'
                 }}
               >
-                AD
-              </span>
-              <span 
-                className="font-playfair text-7xl md:text-8xl lg:text-9xl font-bold text-white tracking-wider"
-                style={{ 
-                  transform: `translateX(${splitProgress * 3}px)`,
-                  opacity: phase === 'revealing' ? 1 - revealProgress / 100 : 1
-                }}
-              >
-                PRO
-              </span>
-            </div>
-
-            {/* Elegant divider */}
-            <div 
-              className="flex items-center justify-center gap-3 mb-6"
-              style={{ 
-                opacity: phase === 'splitting' || phase === 'revealing' ? 1 - splitProgress / 100 : 1 
-              }}
-            >
-              <div className="w-12 h-px bg-gradient-to-r from-transparent to-amber-500/60" />
-              <div className="w-1.5 h-1.5 rotate-45 border border-amber-500/60" />
-              <div className="w-12 h-px bg-gradient-to-l from-transparent to-amber-500/60" />
-            </div>
-
-            {/* Tagline */}
-            <div style={{ 
-              opacity: phase === 'splitting' || phase === 'revealing' ? 1 - splitProgress / 100 : 1 
-            }}>
-              <p className="font-outfit text-base md:text-lg text-gray-400 tracking-[0.25em] uppercase mb-2">
-                Marketing & Technology
-              </p>
-              <p className="font-outfit text-sm text-gray-500 tracking-[0.2em] uppercase">
-                Excellence Delivered
-              </p>
+                <p className="text-xl tracking-[0.3em] uppercase text-gray-300 font-light">
+                  Marketing & Technology
+                </p>
+                <p className="text-lg tracking-[0.2em] uppercase text-gray-400/80 font-light">
+                  Excellence Delivered
+                </p>
+                
+                {/* Elegant divider line */}
+                <div 
+                  className="mx-auto mt-6 h-px bg-gradient-to-r from-transparent via-amber-500/50 to-transparent"
+                  style={{
+                    width: `${logoProgress * 200}px`,
+                    opacity: logoProgress
+                  }}
+                />
+              </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* LEFT DOOR */}
-      <div
-        className="absolute top-0 left-0 w-1/2 h-full z-30"
-        style={{
-          transform: `translateX(-${doorProgress}%)`,
+      {/* ----- MAIN PAGE CONTENT (appears during split) ----- */}
+      <div 
+        className="absolute inset-0 z-20 flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black"
+        style={{ 
+          opacity: mainPageOpacity,
+          transform: `scale(${1 + (splitProgress * 1)})`,
+          transition: 'all 5s ease-in-out'
         }}
       >
-        {/* Door panel */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0c0c0c] via-[#111111] to-[#0a0a0a]">
-          {/* Subtle texture */}
-          <div className="absolute inset-0 opacity-[0.02]" style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
-            backgroundSize: '30px 30px'
-          }} />
-        </div>
-        
-        {/* Inner border accent */}
-        <div className="absolute top-0 right-0 w-px h-full bg-gradient-to-b from-transparent via-amber-600/50 to-transparent" />
-        
-        {/* Door handle */}
-        <div className="absolute top-1/2 right-6 -translate-y-1/2">
-          <div className="w-2 h-20 rounded-full bg-gradient-to-b from-amber-400/80 via-amber-500/60 to-amber-400/80 shadow-lg shadow-amber-500/20" />
-        </div>
-
-        {/* Corner accents */}
-        <div className="absolute top-6 left-6 w-12 h-12 border-l border-t border-amber-500/20" />
-        <div className="absolute bottom-6 left-6 w-12 h-12 border-l border-b border-amber-500/20" />
-        
-        {/* Panel decoration */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[70%] border border-white/[0.03] rounded-sm" />
       </div>
 
-      {/* RIGHT DOOR */}
-      <div
-        className="absolute top-0 right-0 w-1/2 h-full z-30"
-        style={{
-          transform: `translateX(${doorProgress}%)`,
-        }}
+      {/* ----- DOORS (always on top) ----- */}
+      <div 
+        className="absolute inset-0 z-30"
+        style={{ opacity: phase === 'initial' || phase === 'doorsOpening' ? 1 : 0 }}
       >
-        {/* Door panel */}
-        <div className="absolute inset-0 bg-gradient-to-l from-[#0c0c0c] via-[#111111] to-[#0a0a0a]">
-          {/* Subtle texture */}
-          <div className="absolute inset-0 opacity-[0.02]" style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
-            backgroundSize: '30px 30px'
-          }} />
-        </div>
-        
-        {/* Inner border accent */}
-        <div className="absolute top-0 left-0 w-px h-full bg-gradient-to-b from-transparent via-amber-600/50 to-transparent" />
-        
-        {/* Door handle */}
-        <div className="absolute top-1/2 left-6 -translate-y-1/2">
-          <div className="w-2 h-20 rounded-full bg-gradient-to-b from-amber-400/80 via-amber-500/60 to-amber-400/80 shadow-lg shadow-amber-500/20" />
+        {/* Left Door */}
+        <div
+          className="absolute top-0 left-0 w-1/2 h-full"
+          style={{
+            transform: leftDoorTransform,
+            transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-gray-900 to-black">
+            {/* Door texture */}
+            <div className="absolute inset-0 opacity-5" style={{
+              backgroundImage: `repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(255,255,255,0.1) 2px,
+                rgba(255,255,255,0.1) 4px
+              )`
+            }} />
+            
+            {/* Decorative panels */}
+            <div className="absolute inset-y-24 inset-x-12 border border-amber-500/10 rounded-lg" />
+            <div className="absolute top-1/3 left-8 right-8 h-px bg-gradient-to-r from-transparent via-amber-500/20 to-transparent" />
+            <div className="absolute bottom-1/3 left-8 right-8 h-px bg-gradient-to-r from-transparent via-amber-500/20 to-transparent" />
+            
+            {/* Door handle */}
+            <div className="absolute top-1/2 right-10 -translate-y-1/2">
+              <div className="w-3 h-32 rounded-full bg-gradient-to-b from-amber-400/40 via-amber-300/60 to-amber-400/40 shadow-xl shadow-amber-500/20" />
+            </div>
+            
+            {/* Edge glow */}
+            <div className="absolute top-0 right-0 w-px h-full bg-gradient-to-b from-transparent via-amber-500/30 to-transparent" />
+          </div>
         </div>
 
-        {/* Corner accents */}
-        <div className="absolute top-6 right-6 w-12 h-12 border-r border-t border-amber-500/20" />
-        <div className="absolute bottom-6 right-6 w-12 h-12 border-r border-b border-amber-500/20" />
-        
-        {/* Panel decoration */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[70%] border border-white/[0.03] rounded-sm" />
+        {/* Right Door */}
+        <div
+          className="absolute top-0 right-0 w-1/2 h-full"
+          style={{
+            transform: rightDoorTransform,
+            transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-l from-gray-900 to-black">
+            {/* Door texture */}
+            <div className="absolute inset-0 opacity-5" style={{
+              backgroundImage: `repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(255,255,255,0.1) 2px,
+                rgba(255,255,255,0.1) 4px
+              )`
+            }} />
+            
+            {/* Decorative panels */}
+            <div className="absolute inset-y-24 inset-x-12 border border-amber-500/10 rounded-lg" />
+            <div className="absolute top-1/3 left-8 right-8 h-px bg-gradient-to-r from-transparent via-amber-500/20 to-transparent" />
+            <div className="absolute bottom-1/3 left-8 right-8 h-px bg-gradient-to-r from-transparent via-amber-500/20 to-transparent" />
+            
+            {/* Door handle */}
+            <div className="absolute top-1/2 left-10 -translate-y-1/2">
+              <div className="w-3 h-32 rounded-full bg-gradient-to-b from-amber-400/40 via-amber-300/60 to-amber-400/40 shadow-xl shadow-amber-500/20" />
+            </div>
+            
+            {/* Edge glow */}
+            <div className="absolute top-0 left-0 w-px h-full bg-gradient-to-b from-transparent via-amber-500/30 to-transparent" />
+          </div>
+        </div>
+
+        {/* Center seam light */}
+        <div 
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-full bg-gradient-to-b from-transparent via-amber-500/40 to-transparent"
+          style={{
+            opacity: 1 - doorProgress,
+            boxShadow: `0 0 ${500 * (1 - doorProgress)}px rgba(255,215,0,0.3)`
+          }}
+        />
       </div>
 
-      {/* Center seam glow when doors are closed */}
-      {isDoorsClosed && (
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-full z-40 bg-gradient-to-b from-transparent via-amber-500/40 to-transparent" />
-      )}
+      {/* Final white fade overlay */}
+      <div 
+        className="absolute inset-0 z-40"
+        style={{
+          opacity: fadeProgress,
+          transition: 'opacity 2s ease-in-out'
+        }}
+      />
     </div>
   );
 };
