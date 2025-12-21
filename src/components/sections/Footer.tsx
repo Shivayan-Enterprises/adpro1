@@ -29,7 +29,7 @@ export const Footer = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <a href="#" className="text-2xl font-poppins font-bold text-gradient inline-block mb-4">
+            <a href="#" className="text-2xl font-playfair font-bold text-gradient inline-block mb-4">
               ADPRO
             </a>
             <p className="text-muted-foreground mb-6 max-w-sm">

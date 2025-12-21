@@ -10,10 +10,10 @@ const Projects = () => {
   return (
     <>
       <Helmet>
-        <title>Projects | ADPRO - Our Portfolio</title>
+        <title>Work | ADPRO - Marketing Campaigns & Software Projects</title>
         <meta 
           name="description" 
-          content="Explore ADPRO's portfolio of impactful projects across FinTech, Healthcare, E-Commerce, and more. See our work in action." 
+          content="Explore ADPRO's portfolio of successful marketing campaigns, websites, and software products that drive real business results." 
         />
       </Helmet>
 
