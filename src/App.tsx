@@ -6,7 +6,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { useState, useEffect } from "react";
 import { CinematicLoader } from "./components/CinematicLoader";
-import { CustomCursor } from "./components/CustomCursor";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Services from "./pages/Services";
@@ -37,7 +36,6 @@ const App = () => {
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
-          <CustomCursor />
           {showLoader && !hasVisited && (
             <CinematicLoader onComplete={handleLoaderComplete} />
           )}

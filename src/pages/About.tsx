@@ -10,10 +10,10 @@ const About = () => {
   return (
     <>
       <Helmet>
-        <title>About ADPRO | Digital Marketing & Software Development</title>
+        <title>About ADPRO | Software Development Company</title>
         <meta 
           name="description" 
-          content="Learn about ADPRO - a passionate team of marketers, developers, and strategists delivering growth through digital marketing and technology." 
+          content="Learn about ADPRO - a passionate team of developers, designers, and strategists dedicated to building exceptional digital experiences since 2016." 
         />
       </Helmet>
 

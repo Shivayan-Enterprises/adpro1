@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -82,12 +82,12 @@
   }
 
   body {
-    @apply bg-background text-foreground font-outfit;
+    @apply bg-background text-foreground font-inter;
     cursor: none;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-playfair font-semibold;
+    @apply font-poppins font-bold;
   }
 }
 

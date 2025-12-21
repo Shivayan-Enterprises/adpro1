@@ -4,33 +4,33 @@ import { Zap, Shield, Users, Rocket, Code, HeartHandshake } from 'lucide-react';
 const reasons = [
   {
     icon: Zap,
-    title: 'Marketing + Development',
-    description: 'One team, one vision. Your campaigns and products work together seamlessly.',
+    title: 'Lightning Fast',
+    description: 'Performance-optimized applications that load in milliseconds.',
   },
   {
     icon: Shield,
-    title: 'Data-Driven Campaigns',
-    description: 'Every decision backed by analytics. Every campaign optimized for results.',
+    title: 'Enterprise Security',
+    description: 'Bank-grade security practices built into every layer.',
   },
   {
     icon: Users,
     title: 'Dedicated Team',
-    description: 'A passionate team fully committed to your growth and success.',
+    description: 'A passionate team fully committed to your success.',
   },
   {
     icon: Rocket,
-    title: 'Scalable Systems',
-    description: 'Technology built to grow with you, from startup to enterprise.',
+    title: 'Rapid Delivery',
+    description: 'Agile methodology ensures fast time-to-market.',
   },
   {
     icon: Code,
-    title: 'Creative Strategy',
-    description: 'Bold ideas backed by technology. Innovation that drives engagement.',
+    title: 'Clean Code',
+    description: 'Maintainable, well-documented code that scales.',
   },
   {
     icon: HeartHandshake,
     title: 'Long-term Partnership',
-    description: 'We grow with you, providing ongoing support and optimization.',
+    description: 'We grow with you, providing ongoing support.',
   },
 ];
 
@@ -53,7 +53,7 @@ export const WhySection = () => {
               Why <span className="text-gradient">ADPRO</span>?
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Marketing and development under one roof. Strategy backed by technology.
+              We don't just build software. We build systems that scale.
             </p>
             <div className="h-1 w-24 bg-gradient-to-r from-primary to-accent mx-auto rounded-full mt-6" />
           </div>
@@ -89,7 +89,7 @@ export const WhySection = () => {
             }`}
           >
             <blockquote className="text-2xl md:text-3xl font-bold text-gradient max-w-3xl mx-auto">
-              "We don't just build software or run campaigns. We build systems that scale your business."
+              "Excellence is not a destination but a continuous journey in software craftsmanship."
             </blockquote>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { MagneticButton } from '../MagneticButton';
-import { ArrowRight, TrendingUp, Code } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export const CTASection = () => {
@@ -30,13 +30,14 @@ export const CTASection = () => {
             
             <div className="relative z-10">
               <h2 className="text-3xl md:text-5xl font-bold mb-6 text-primary-foreground">
-                Whether You Need Leads
+                Ready to Build Something
                 <br />
-                <span className="text-primary-foreground/90">Or a Product — ADPRO Builds It</span>
+                <span className="text-primary-foreground/90">Extraordinary?</span>
               </h2>
               
               <p className="text-lg md:text-xl text-primary-foreground/80 max-w-2xl mx-auto mb-10">
-                From performance marketing to custom software, we deliver solutions that drive real business growth.
+                Let's discuss how we can turn your vision into a powerful, scalable digital solution 
+                that drives real business results.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -46,24 +47,19 @@ export const CTASection = () => {
                     className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 border-primary-foreground group/btn"
                   >
                     <span className="flex items-center gap-2">
-                      <TrendingUp className="w-5 h-5" />
-                      Start Marketing
+                      Start Your Project
                       <ArrowRight className="w-5 h-5 transition-transform group-hover/btn:translate-x-1" />
                     </span>
                   </MagneticButton>
                 </Link>
                 
-                <Link to="/services">
-                  <MagneticButton 
-                    variant="outline"
-                    className="border-primary-foreground/50 text-primary-foreground hover:bg-primary-foreground/10"
-                  >
-                    <span className="flex items-center gap-2">
-                      <Code className="w-5 h-5" />
-                      Start Development
-                    </span>
-                  </MagneticButton>
-                </Link>
+                <MagneticButton 
+                  variant="outline"
+                  className="border-primary-foreground/50 text-primary-foreground hover:bg-primary-foreground/10"
+                  onClick={() => window.open('mailto:hello@adpro.dev', '_blank')}
+                >
+                  Schedule a Call
+                </MagneticButton>
               </div>
             </div>
           </div>

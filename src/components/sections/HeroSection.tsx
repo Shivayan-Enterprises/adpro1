@@ -64,9 +64,9 @@ export const HeroSection = () => {
           }`}
         >
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-            Advertising Ideas.
+            We Engineer Software
             <br />
-            <span className="text-gradient">Developing Digital Products.</span>
+            <span className="text-gradient">That Moves Businesses Forward</span>
           </h1>
         </div>
 
@@ -78,7 +78,7 @@ export const HeroSection = () => {
           }`}
         >
           <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-10">
-            ADPRO helps brands grow with performance-driven marketing and scalable software solutions.
+            ADPRO builds scalable, high-performance digital products that transform how businesses operate.
           </p>
         </div>
 
@@ -91,12 +91,12 @@ export const HeroSection = () => {
         >
           <Link to="/contact">
             <MagneticButton variant="primary">
-              Grow Your Brand
+              Start Your Project
             </MagneticButton>
           </Link>
-          <Link to="/services">
+          <Link to="/projects">
             <MagneticButton variant="outline">
-              Build Your Product
+              View Our Work
             </MagneticButton>
           </Link>
         </div>

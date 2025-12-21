@@ -8,10 +8,10 @@ const Contact = () => {
   return (
     <>
       <Helmet>
-        <title>Contact | ADPRO - Start Your Project</title>
+        <title>Contact | ADPRO - Get in Touch</title>
         <meta 
           name="description" 
-          content="Ready to grow your brand or build your product? Contact ADPRO today. Let's discuss how marketing and technology can transform your business." 
+          content="Have a project in mind? Contact ADPRO today. We'd love to hear about your project and discuss how we can help." 
         />
       </Helmet>
 
