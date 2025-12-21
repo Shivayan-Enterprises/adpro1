@@ -191,7 +191,7 @@ export const CinematicLoader = ({ onComplete }: CinematicLoaderProps) => {
             </>
           )}
 
-          {/* Splitting Name */}
+          {/* Splitting Name
           {phase === 'splitName' && (
             <div className="flex gap-8">
               <div
@@ -211,15 +211,7 @@ export const CinematicLoader = ({ onComplete }: CinematicLoaderProps) => {
                 <h2 className="text-8xl font-bold text-white">PRO</h2>
               </div>
             </div>
-          )}
-
-          {/* Final Content */}
-          {phase === 'revealContent' || phase === 'complete' ? (
-            <div className="text-center">
-              <h2 className="text-6xl font-bold text-white mb-6">Welcome</h2>
-              <p className="text-2xl text-gray-300">Your experience begins now</p>
-            </div>
-          ) : null}
+          )} */}
         </div>
       </div>
     </div>
