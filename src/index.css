@@ -24,11 +24,11 @@
     --muted: 220 15% 95%;
     --muted-foreground: 220 10% 50%;
 
-    --accent: 38 90% 55%;
+    --accent: 280 70% 60%;
     --accent-foreground: 0 0% 100%;
     
-    --pink-gold: 38 85% 55%;
-    --rose-gold: 42 80% 50%;
+    --pink-gold: 320 80% 65%;
+    --rose-gold: 280 70% 55%;
 
     --destructive: 0 75% 55%;
     --destructive-foreground: 0 0% 100%;
@@ -63,11 +63,11 @@
     --muted: 220 20% 15%;
     --muted-foreground: 220 15% 60%;
 
-    --accent: 38 85% 55%;
+    --accent: 280 70% 65%;
     --accent-foreground: 0 0% 100%;
     
-    --pink-gold: 38 80% 50%;
-    --rose-gold: 42 75% 45%;
+    --pink-gold: 320 85% 70%;
+    --rose-gold: 280 75% 60%;
 
     --destructive: 0 60% 45%;
     --destructive-foreground: 0 0% 100%;
@@ -99,7 +99,7 @@
 
 @layer utilities {
   .text-gradient {
-    @apply bg-gradient-to-r from-[hsl(38,90%,55%)] via-[hsl(42,85%,50%)] to-[hsl(35,80%,45%)] bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-[hsl(280,70%,60%)] via-[hsl(320,80%,65%)] to-[hsl(340,75%,60%)] bg-clip-text text-transparent;
   }
 
   .glow {
