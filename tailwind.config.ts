@@ -14,8 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        playfair: ["Playfair Display", "serif"],
-        outfit: ["Outfit", "sans-serif"],
+        poppins: ["Poppins", "sans-serif"],
+        inter: ["Inter", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -52,8 +52,6 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         glow: "hsl(var(--glow))",
-        "pink-gold": "hsl(var(--pink-gold))",
-        "rose-gold": "hsl(var(--rose-gold))",
       },
       borderRadius: {
         lg: "var(--radius)",
