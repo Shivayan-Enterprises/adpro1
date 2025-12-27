@@ -2,16 +2,10 @@ import { MagneticButton } from '../MagneticButton';
 import { FloatingIcon } from '../FloatingIcon';
 import { ReactIcon, AngularIcon, NodeIcon, MongoDBIcon, AWSIcon } from '../TechIcons';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import { Link } from 'react-router-dom';
 
 export const HeroSection = () => {
   const { ref, isVisible } = useScrollAnimation();
-
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
@@ -65,48 +59,46 @@ export const HeroSection = () => {
         <div
           className={`transition-all duration-700 ${
             isVisible 
-              ? 'translate-y-0 opacity-100' 
-              : 'translate-y-20 opacity-0'
+              ? 'translate-y-0 scale-100' 
+              : 'translate-y-20 scale-95'
           }`}
         >
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-            We Engineer Software
+            Advertising Ideas.
             <br />
-            <span className="text-gradient">That Moves Businesses Forward</span>
+            <span className="text-gradient">Developing Digital Products.</span>
           </h1>
         </div>
 
         <div
           className={`transition-all duration-700 delay-150 ${
             isVisible 
-              ? 'translate-y-0 opacity-100' 
-              : 'translate-y-20 opacity-0'
+              ? 'translate-y-0 scale-100' 
+              : 'translate-y-20 scale-95'
           }`}
         >
           <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-10">
-            ADPRO builds scalable, high-performance digital products that transform how businesses operate.
+            ADPRO helps brands grow with performance-driven marketing and scalable software solutions.
           </p>
         </div>
 
         <div
           className={`flex flex-col sm:flex-row gap-4 justify-center transition-all duration-700 delay-300 ${
             isVisible 
-              ? 'translate-y-0 opacity-100' 
-              : 'translate-y-20 opacity-0'
+              ? 'translate-y-0 scale-100' 
+              : 'translate-y-20 scale-95'
           }`}
         >
-          <MagneticButton 
-            variant="primary"
-            onClick={() => scrollToSection('#contact')}
-          >
-            Start Your Project
-          </MagneticButton>
-          <MagneticButton 
-            variant="outline"
-            onClick={() => scrollToSection('#projects')}
-          >
-            View Our Work
-          </MagneticButton>
+          <Link to="/contact">
+            <MagneticButton variant="primary">
+              Grow Your Brand
+            </MagneticButton>
+          </Link>
+          <Link to="/services">
+            <MagneticButton variant="outline">
+              Build Your Product
+            </MagneticButton>
+          </Link>
         </div>
       </div>
 

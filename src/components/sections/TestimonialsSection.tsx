@@ -80,8 +80,8 @@ export const TestimonialsSection = () => {
           <div
             className={`text-center mb-16 transition-all duration-700 ${
               isVisible 
-                ? 'translate-y-0 opacity-100' 
-                : 'translate-y-20 opacity-0'
+                ? 'translate-y-0 scale-100' 
+                : 'translate-y-20 scale-95'
             }`}
           >
             <h2 className="text-3xl md:text-5xl font-bold mb-6">
@@ -117,8 +117,8 @@ export const TestimonialsSection = () => {
             className={cn(
               "flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4 transition-all duration-700 delay-200",
               isVisible 
-                ? 'translate-x-0 opacity-100' 
-                : 'translate-x-20 opacity-0',
+                ? 'translate-x-0 scale-100' 
+                : 'translate-x-20 scale-95',
               isDragging ? 'cursor-grabbing' : 'cursor-grab'
             )}
             onMouseDown={handleMouseDown}

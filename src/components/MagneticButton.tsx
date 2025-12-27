@@ -31,7 +31,7 @@ export const MagneticButton = ({
     setPosition({ x: 0, y: 0 });
   };
 
-  const baseStyles = "relative px-8 py-4 rounded-xl font-poppins font-semibold text-lg overflow-hidden transition-all duration-200";
+  const baseStyles = "relative px-8 py-4 rounded-xl font-outfit font-semibold text-lg overflow-hidden transition-all duration-200";
   
   const variants = {
     primary: "bg-primary text-primary-foreground hover:glow-strong active:scale-95",

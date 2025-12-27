@@ -45,8 +45,8 @@ export const ContactSection = () => {
           <div
             className={`text-center mb-16 transition-all duration-700 ${
               isVisible 
-                ? 'translate-y-0 opacity-100' 
-                : 'translate-y-20 opacity-0'
+                ? 'translate-y-0 scale-100' 
+                : 'translate-y-20 scale-95'
             }`}
           >
             <h2 className="text-3xl md:text-5xl font-bold mb-6">
@@ -64,8 +64,8 @@ export const ContactSection = () => {
             <div
               className={`transition-all duration-700 delay-200 ${
                 isVisible 
-                  ? 'translate-x-0 opacity-100' 
-                  : '-translate-x-20 opacity-0'
+                  ? 'translate-x-0 scale-100' 
+                  : '-translate-x-20 scale-95'
               }`}
             >
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -160,7 +160,7 @@ export const ContactSection = () => {
                   variant="primary"
                   className={cn(
                     "w-full",
-                    isSubmitting && "opacity-70 pointer-events-none"
+                    isSubmitting && "scale-95 pointer-events-none"
                   )}
                 >
                   <span className="flex items-center justify-center gap-2">
@@ -178,8 +178,8 @@ export const ContactSection = () => {
             <div
               className={`transition-all duration-700 delay-400 ${
                 isVisible 
-                  ? 'translate-x-0 opacity-100' 
-                  : 'translate-x-20 opacity-0'
+                  ? 'translate-x-0 scale-100' 
+                  : 'translate-x-20 scale-95'
               }`}
             >
               <div className="h-full flex flex-col justify-center space-y-8">

@@ -4,33 +4,33 @@ import { Zap, Shield, Users, Rocket, Code, HeartHandshake } from 'lucide-react';
 const reasons = [
   {
     icon: Zap,
-    title: 'Lightning Fast',
-    description: 'Performance-optimized applications that load in milliseconds.',
+    title: 'Marketing + Development',
+    description: 'One team, one vision. Your campaigns and products work together seamlessly.',
   },
   {
     icon: Shield,
-    title: 'Enterprise Security',
-    description: 'Bank-grade security practices built into every layer.',
+    title: 'Data-Driven Campaigns',
+    description: 'Every decision backed by analytics. Every campaign optimized for results.',
   },
   {
     icon: Users,
     title: 'Dedicated Team',
-    description: 'A passionate team fully committed to your success.',
+    description: 'A passionate team fully committed to your growth and success.',
   },
   {
     icon: Rocket,
-    title: 'Rapid Delivery',
-    description: 'Agile methodology ensures fast time-to-market.',
+    title: 'Scalable Systems',
+    description: 'Technology built to grow with you, from startup to enterprise.',
   },
   {
     icon: Code,
-    title: 'Clean Code',
-    description: 'Maintainable, well-documented code that scales.',
+    title: 'Creative Strategy',
+    description: 'Bold ideas backed by technology. Innovation that drives engagement.',
   },
   {
     icon: HeartHandshake,
     title: 'Long-term Partnership',
-    description: 'We grow with you, providing ongoing support.',
+    description: 'We grow with you, providing ongoing support and optimization.',
   },
 ];
 
@@ -45,15 +45,15 @@ export const WhySection = () => {
           <div
             className={`text-center mb-16 transition-all duration-700 ${
               isVisible 
-                ? 'translate-x-0 opacity-100' 
-                : '-translate-x-20 opacity-0'
+                ? 'translate-x-0 scale-100' 
+                : '-translate-x-20 scale-95'
             }`}
           >
             <h2 className="text-3xl md:text-5xl font-bold mb-6">
               Why <span className="text-gradient">ADPRO</span>?
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              We don't just build software. We build systems that scale.
+              Marketing and development under one roof. Strategy backed by technology.
             </p>
             <div className="h-1 w-24 bg-gradient-to-r from-primary to-accent mx-auto rounded-full mt-6" />
           </div>
@@ -65,8 +65,8 @@ export const WhySection = () => {
                 key={reason.title}
                 className={`group p-6 rounded-2xl bg-card border border-border transition-all duration-500 hover:card-glow-hover hover:scale-105 ${
                   isVisible 
-                    ? 'translate-y-0 opacity-100' 
-                    : 'translate-y-20 opacity-0'
+                    ? 'translate-y-0 scale-100' 
+                    : 'translate-y-20 scale-90'
                 }`}
                 style={{ transitionDelay: `${200 + index * 100}ms` }}
                 data-hover
@@ -84,12 +84,12 @@ export const WhySection = () => {
           <div
             className={`mt-16 text-center transition-all duration-700 delay-700 ${
               isVisible 
-                ? 'scale-100 opacity-100' 
-                : 'scale-90 opacity-0'
+                ? 'scale-100 translate-y-0' 
+                : 'scale-90 translate-y-10'
             }`}
           >
             <blockquote className="text-2xl md:text-3xl font-bold text-gradient max-w-3xl mx-auto">
-              "Excellence is not a destination but a continuous journey in software craftsmanship."
+              "We don't just build software or run campaigns. We build systems that scale your business."
             </blockquote>
           </div>
         </div>
