@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 @layer base {
-   :root {
+  :root {
     --background: 0 0% 98%;
     --foreground: 222 47% 11%;
 
@@ -15,7 +15,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
 
-    --primary: 217 91% 60%;
+    --primary: 349 82% 42%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 210 40% 96%;
@@ -36,8 +36,8 @@
 
     --radius: 0.75rem;
 
-    --glow: 217 91% 60%;
-    --gradient-start: 217 91% 60%;
+    --glow: 349 82% 42%;
+    --gradient-start: 349 82% 42%;
     --gradient-end: 262 83% 58%;
   }
 
@@ -51,7 +51,7 @@
     --popover: 222 47% 9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 217 91% 60%;
+    --primary: 349 82% 52%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 217 33% 17%;
@@ -60,7 +60,7 @@
     --muted: 217 33% 17%;
     --muted-foreground: 215 20% 65%;
 
-    --accent: 280 100% 70%;
+    --accent: 262 83% 68%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 63% 31%;
@@ -70,9 +70,9 @@
     --input: 217 33% 17%;
     --ring: 217 91% 60%;
 
-    --glow: 280 100% 70%;
-    --gradient-start: 217 91% 60%;
-    --gradient-end: 280 100% 70%;
+    --glow: 349 82% 52%;
+    --gradient-start: 349 82% 52%;
+    --gradient-end: 262 83% 68%;
   }
 }
 
