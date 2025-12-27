@@ -3,13 +3,13 @@ import { useEffect, useState } from 'react';
 type Theme = 'light' | 'dark';
 
 export const useTheme = () => {
-  const [theme, setTheme] = useState<Theme>(() => {
+const [theme, setTheme] = useState<Theme>(() => {
     if (typeof window !== 'undefined') {
       const stored = localStorage.getItem('adpro-theme') as Theme;
       if (stored) return stored;
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      return 'dark'; // Default to dark mode
     }
-    return 'light';
+    return 'dark';
   });
 
   useEffect(() => {
