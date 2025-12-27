@@ -5,20 +5,18 @@ import { useState } from 'react';
 const stats = [
   { value: 150, suffix: '+', label: 'Projects Delivered' },
   { value: 50, suffix: '+', label: 'Happy Clients' },
-  { value: 8, suffix: '+', label: 'Years Experience' },
+  { value: 2, suffix: '+', label: 'Years Experience' },
   { value: 99, suffix: '%', label: 'Client Satisfaction' },
 ];
 
 const StatCard = ({ value, suffix, label }: { value: number; suffix: string; label: string }) => {
-  const [isHovered, setIsHovered] = useState(false);
+  const [isHovered] = useState(true);
   const count = useCountUp(value, isHovered, 2000);
 
   return (
     <div
       className="text-center p-6 rounded-2xl bg-card border border-border transition-all duration-300 hover:card-glow-hover hover:scale-105"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      data-hover
+  
     >
       <div className="text-4xl md:text-5xl font-bold text-gradient mb-2">
         {count}{suffix}
@@ -70,17 +68,11 @@ export const AboutSection = () => {
 
           {/* Stats */}
           <div
-            className={`grid grid-cols-2 lg:grid-cols-4 gap-6 transition-all duration-700 delay-300 ${
-              isVisible 
-                ? 'translate-y-0 scale-100' 
-                : 'translate-y-20 scale-95'
-            }`}
+            className={`grid grid-cols-2 lg:grid-cols-4 gap-6 `}
           >
             {stats.map((stat, index) => (
               <div
                 key={stat.label}
-                className="transition-all duration-500"
-                style={{ transitionDelay: `${300 + index * 100}ms` }}
               >
                 <StatCard {...stat} />
               </div>
